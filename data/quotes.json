@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-05-24T23:46:46.165Z",
+  "generatedAt": "2026-05-25T00:14:27.232Z",
   "source": "synthetic",
   "tickers": {
     "HRV": {
       "ticker": "HRV",
       "price": 58,
       "prevClose": 58.36556545561983,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -106,7 +106,7 @@
       "ticker": "VO2",
       "price": 48.5,
       "prevClose": 48.43351037878897,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -206,7 +206,7 @@
       "ticker": "DEEP",
       "price": 86,
       "prevClose": 87.07420404522938,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -306,7 +306,7 @@
       "ticker": "REM",
       "price": 102,
       "prevClose": 101.81760773531883,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -406,7 +406,7 @@
       "ticker": "SLP",
       "price": 81,
       "prevClose": 81.27244194438096,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -506,7 +506,7 @@
       "ticker": "STEP",
       "price": 11.2,
       "prevClose": 11.297473236271832,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -606,7 +606,7 @@
       "ticker": "REC",
       "price": 72,
       "prevClose": 71.18872154759637,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -706,7 +706,7 @@
       "ticker": "STR",
       "price": 13.4,
       "prevClose": 13.272768568690545,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -806,7 +806,7 @@
       "ticker": "BF",
       "price": 18.5,
       "prevClose": 18.504603104924794,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [
@@ -906,7 +906,7 @@
       "ticker": "MOB",
       "price": 78,
       "prevClose": 77.51696571312058,
-      "ts": 1779666406165,
+      "ts": 1779668067232,
       "currency": "USD",
       "exchange": "SIM",
       "closes": [

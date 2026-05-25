@@ -723,6 +723,7 @@ function renderTickerSelect() {
     renderDetail();
     renderStocksTable();
     renderExtraPanel();
+    renderExtra2Panel();
     announce(`Selected ${state.selectedTicker}. Metric detail loaded.`);
   });
 }
@@ -1365,6 +1366,7 @@ function startLiveTicks() {
     renderTickerTape();
     renderStocksTable();
     renderExtraPanel();
+    renderExtra2Panel();
   };
 
   // Cadence: faster while market open, slower when closed, slowest when offline
@@ -1510,6 +1512,7 @@ function selectTickerFromRow(ticker) {
   renderDetail();
   renderStocksTable();
   renderExtraPanel();
+  renderExtra2Panel();
   // Don't steal focus — just announce
   announce(`Selected ${ticker}. Detail panel updated.`);
   // Scroll detail into view for convenience but keep focus
@@ -1942,6 +1945,54 @@ function renderExtraPanel() {
   if (body) body.innerHTML = segs.map((s, i) => `<tr><td>${i.toString().padStart(2, "0")}h</td><td>${(s.v * 100).toFixed(0)}%</td></tr>`).join("");
 }
 
+
+function renderExtra2Panel() {
+  const container = document.getElementById("extra2-content");
+  if (!container || !state.stocks) return;
+  const metrics = state.stocks;
+  const n = metrics.length;
+  // Simulated rolling correlations — derived from mu/sigma similarity
+  function corr(i, j) {
+    if (i === j) return 1;
+    const a = metrics[i], b = metrics[j];
+    const dm = (a.mu - b.mu) / 0.06;
+    const ds = (a.sigma - b.sigma) / 0.18;
+    const seed = ((i * 7 + j * 11) % 13) / 13 - 0.5;
+    return Math.max(-0.95, Math.min(0.95, 0.6 * Math.exp(-(dm * dm + ds * ds)) + seed * 0.4));
+  }
+  const w = 720, h = 480, padL = 80, padR = 12, padT = 60, padB = 18;
+  const cellW = (w - padL - padR) / n;
+  const cellH = (h - padT - padB) / n;
+  let cells = "", colHdr = "", rowHdr = "";
+  const data = [];
+  function cellColor(r) {
+    if (r >= 0.5) return "#2ce5cc";
+    if (r >= 0.2) return "#7befd8";
+    if (r >= -0.2) return "#3a4a5e";
+    if (r >= -0.5) return "#b32347";
+    return "#ff3366";
+  }
+  for (let i = 0; i < n; i++) {
+    rowHdr += `<text x="${padL - 6}" y="${padT + i * cellH + cellH / 2 + 3}" text-anchor="end" fill="#d6dce4" font-size="10" font-family="JetBrains Mono, monospace">${metrics[i].ticker}</text>`;
+    for (let j = 0; j < n; j++) {
+      const r = corr(i, j);
+      const x = padL + j * cellW, y = padT + i * cellH;
+      cells += `<rect x="${x}" y="${y}" width="${cellW - 1}" height="${cellH - 1}" fill="${cellColor(r)}" fill-opacity="${(0.4 + Math.abs(r) * 0.55).toFixed(2)}" stroke="#191c23"/>
+        <text x="${x + cellW / 2}" y="${y + cellH / 2 + 3}" text-anchor="middle" fill="#d6dce4" font-size="9" font-family="JetBrains Mono, monospace">${r >= 0 ? "+" : ""}${r.toFixed(2)}</text>`;
+      if (j > i) data.push({ a: metrics[i].ticker, b: metrics[j].ticker, r });
+    }
+  }
+  for (let j = 0; j < n; j++) {
+    colHdr += `<text x="${padL + j * cellW + cellW / 2}" y="${padT - 8}" text-anchor="middle" fill="#d6dce4" font-size="10" font-family="JetBrains Mono, monospace">${metrics[j].ticker}</text>`;
+  }
+  container.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Biomarker correlation matrix, 30-day rolling Pearson r across ${n} metrics.">
+    <text x="6" y="14" fill="#7f8693" font-size="9" font-family="JetBrains Mono, monospace">PEARSON r · 30-DAY</text>
+    ${colHdr}${rowHdr}${cells}
+  </svg>`;
+  const body = document.getElementById("extra2-data-body");
+  if (body) body.innerHTML = data.map(d => `<tr><td>${d.a}</td><td>${d.b}</td><td>${d.r >= 0 ? "+" : ""}${d.r.toFixed(2)}</td></tr>`).join("");
+}
+
 // ========== Init ==========
 async function init() {
   updateConnStripOnly();
@@ -1971,6 +2022,7 @@ async function init() {
   wireKpiTilt();
   startLiveTicks();
   renderExtraPanel();
+  renderExtra2Panel();
 
   const src = result.ok ? `real Yahoo Finance data for ${result.count} tickers` : "simulated data (live feed unavailable)";
   announce(`Dashboard ready with ${src}.`);
