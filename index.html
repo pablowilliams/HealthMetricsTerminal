@@ -85,7 +85,7 @@
 
       <div class="strategy-bar">
         <fieldset class="strategy-fieldset">
-          <legend>Trading strategies <span class="legend-hint">pick one or more — signals combine</span></legend>
+          <legend>Intervention strategies <span class="legend-hint">pick one or more — signals combine</span></legend>
           <div class="strategy-options" id="strategy-options"></div>
         </fieldset>
       </div>
@@ -366,6 +366,7 @@
           <nav aria-labelledby="methodology-toc-heading" class="methodology-toc">
             <h3 id="methodology-toc-heading">On this page</h3>
             <ol>
+              <li><a href="#m-abstract">Abstract</a></li>
               <li><a href="#m-model">Stochastic model</a></li>
               <li><a href="#m-calib">Calibration</a></li>
               <li><a href="#m-impl">Numerical implementation</a></li>
@@ -379,6 +380,9 @@
           </nav>
 
           <article class="methodology-article">
+            <h3 id="m-abstract">Abstract</h3>
+            <p>This dashboard implements an Ornstein–Uhlenbeck mean-reverting forecasting layer over personal physiological biomarkers (HRV, VO2max, RHR, sleep architecture, recovery score). Each metric is modeled around an individual baseline with metric-specific reversion rate, capturing the empirically established short-horizon mean-reverting behavior of HRV-RMSSD under perturbation (<cite>Plews et al., 2013</cite>; <cite>Buchheit, 2014</cite>). Training-strain is coupled via a Banister-style acute-to-chronic impulse-response (<cite>Banister, 1991</cite>); injury-risk thresholds use the Gabbett (<cite>Gabbett, 2016</cite>) acute:chronic ratio framework. The exact-transition OU discretization (over Euler) was chosen for both numerical efficiency at high κ and elimination of timestep bias in intervention-threshold first-passage estimates.</p>
+
             <h3 id="m-model">Stochastic model</h3>
             <p>Human physiological time series exhibit a robust pattern: short-term shocks (a poor night's sleep, an alcoholic dinner, a long-haul flight) push biomarkers away from a stable individual baseline, but the body returns to that baseline within a metric-specific decay time. This is the textbook signature of a mean-reverting Ornstein–Uhlenbeck (OU) process. We model each biomarker <code>X_t</code> as:</p>
       <p class="m-eq"><span role="math" aria-label="d X sub t equals kappa times theta minus X sub t, dt, plus sigma dW sub t">dX_t = κ (θ − X_t) dt + σ dW_t</span></p>
